@@ -18,6 +18,7 @@ from email.mime.text import MIMEText
 from datetime import date
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
+from pathlib import Path
 
 # Load environment variables from .env file
 load_dotenv()
@@ -45,7 +46,8 @@ while True:
         print(e)
         break
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+BASE_DIR = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 # Email configuration
 SMTP_SERVER = os.getenv("SMTP_SERVER")
