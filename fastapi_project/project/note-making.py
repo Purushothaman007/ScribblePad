@@ -19,9 +19,12 @@ from datetime import date
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
 from pathlib import Path
+from sqlalchemy import create_engine
 
 # Load environment variables from .env file
 load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL)
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET"))
