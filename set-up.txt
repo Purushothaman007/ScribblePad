@@ -1,0 +1,28 @@
+1.create one folder
+    > create folder for project (project)
+    > create venv ( python -m venv venv)
+
+2.inside project
+    > create init.py
+    >create a folder named "template" to store HTML files
+    >create a folder named "static/css" to store CSS files
+
+activate environment : venv/scripts/activate
+
+
+3. Create Project Folder and Virtual Environment
+   Open VS Code; Terminal
+   Run: mkdir fastapi_project &amp;&amp; cd fastapi_project
+   Create a virtual environment: python -m venv venv
+   Activate it: venv\Scripts\activate (Windows)
+4. Upgrade pip
+   Run: pip install --upgrade pip
+5. Install FastAPI and Uvicorn
+   Run: pip install fastapi uvicorn
+6. Install PostgreSQL Driver
+    Run: pip install psycopg2-binary
+7. Install SQLAlchemy (for ORM support)
+   Run: pip install sqlalchemy
+   (Optional for migrations): pip install alembic
+
+	

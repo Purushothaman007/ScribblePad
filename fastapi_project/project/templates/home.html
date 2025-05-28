@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note-Making App - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/home.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-details">
+            <h1>Welcome, {{ username }}!</h1>
+            <p>Manage your notes efficiently and securely 🙂.</p>
+            <!-- Export as PDF Button -->
+            <form action="/notes/export-pdf" method="post" style="margin-top: 10px;">
+                <input type="hidden" name="selected_tag" value="{{ selected_tag }}">
+                <button type="submit" class="export-pdf-btn">Export as PDF</button>
+            </form>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="home-card">
+            <h2>Your Notes</h2>
+            <!-- Filter by Tag Form -->
+            <div class="filter-tags">
+                <form action="/notes/filter" method="get">
+                    <label for="filter-tag"><b>Filter by Tag:<b></label>
+                    <select id="filter-tag" name="tag">
+                        <option value="">All Tags</option>
+                        <option value="work" {% if selected_tag == 'work' %}selected{% endif %}>work</option>
+                        <option value="personal" {% if selected_tag == 'personal' %}selected{% endif %}>personal</option>
+                        <option value="urgent" {% if selected_tag == 'urgent' %}selected{% endif %}>urgent</option>
+                        <option value="study" {% if selected_tag == 'study' %}selected{% endif %}>study</option>
+                        <option value="meeting" {% if selected_tag == 'meeting' %}selected{% endif %}>meeting</option>
+                        <option value="todo" {% if selected_tag == 'todo' %}selected{% endif %}>todo</option>
+                        <option value="idea" {% if selected_tag == 'idea' %}selected{% endif %}>idea</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                    <button type="button" onclick="window.location.href='/notes'">Clear Filter</button>
+                </form>
+            </div>
+            <div id="notes-list">
+                {% if notes %}
+                    {% for note in notes %}
+                        <div class="note-card" id="note-{{ note.note_id }}">
+                            <div class="note-content">
+                                <h3><strong>{{ note.title }}<strong></h3>
+                                <hr>
+                                <p>{{ note.content }}</p>
+                                {% if note.reminder_date %}
+                                    <p>Reminder: {{ note.reminder_date }}</p>
+                                {% endif %}
+                                {% if note.tags %}
+                                    <p>Tag: <span class="tag-badge tag-{{ note.tags }}">{{ note.tags }}</span></p>
+                                {% endif %}
+                            </div>
+                            <div class="note-actions">
+                                <button class="edit-btn" data-note-id="{{ note.note_id }}" onclick="window.location.href='/notes/edit/{{ note.note_id }}'">Edit</button>
+                                <button class="tag-btn" data-note-id="{{ note.note_id }}">Set Tag</button>
+                                <form action="/notes/delete/{{ note.note_id }}" method="post" style="display: inline;" id="delete-form-{{ note.note_id }}">
+                                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                                    <button type="button" class="delete-btn" onclick="showDeleteConfirm('delete-form-{{ note.note_id }}')">Delete</button>
+                                </form>
+                            </div>
+                            <!-- Edit Form (Hidden by Default, Shown if editing_note_id Matches) -->
+                            <div class="edit-form" id="edit-form-{{ note.note_id }}" style="display: {% if editing_note_id == note.note_id %}block{% else %}none{% endif %};">
+                                <form action="/notes/edit/{{ note.note_id }}" method="post">
+                                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                                    <input type="hidden" id="set-reminder-hidden-{{ note.note_id }}" name="set_reminder" value="{% if note.reminder_date %}on{% else %}off{% endif %}">
+                                    <label for="edit-title-{{ note.note_id }}">Title:</label>
+                                    <input type="text" id="edit-title-{{ note.note_id }}" name="title" value="{{ note.title }}" required>
+                                    <label for="edit-content-{{ note.note_id }}">Content:</label>
+                                    <textarea id="edit-content-{{ note.note_id }}" name="content" required>{{ note.content }}</textarea>
+                                    <label for="set-reminder-{{ note.note_id }}">Set Reminder:</label>
+                                    <button type="button" class="set-reminder-toggle" id="set-reminder-{{ note.note_id }}" data-state="{% if note.reminder_date %}on{% else %}off{% endif %}">
+                                        {% if note.reminder_date %}On{% else %}Off{% endif %}
+                                    </button>
+                                    <label for="edit-reminder-date-{{ note.note_id }}">Reminder Date:</label>
+                                    <input type="date" id="edit-reminder-date-{{ note.note_id }}" name="reminder_date" value="{% if note.reminder_date %}{{ note.reminder_date.strftime('%Y-%m-%d') }}{% endif %}" {% if not note.reminder_date %}disabled{% endif %}>
+                                    <button type="submit">Save Changes</button>
+                                    <button type="button" class="cancel-edit" data-note-id="{{ note.note_id }}">Cancel</button>
+                                </form>
+                            </div>
+                            <!-- Tag Form (Hidden by Default) -->
+                            <div class="tag-form" id="tag-form-{{ note.note_id }}" style="display: none;">
+                                <form action="/notes/tag/{{ note.note_id }}" method="post">
+                                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                                    <label for="tag-{{ note.note_id }}">Tag:</label>
+                                    <select id="tag-{{ note.note_id }}" name="tag">
+                                        <option value="">No Tag</option>
+                                        <option value="work" {% if note.tags == 'work' %}selected{% endif %}>work</option>
+                                        <option value="personal" {% if note.tags == 'personal' %}selected{% endif %}>personal</option>
+                                        <option value="urgent" {% if note.tags == 'urgent' %}selected{% endif %}>urgent</option>
+                                        <option value="study" {% if note.tags == 'study' %}selected{% endif %}>study</option>
+                                        <option value="meeting" {% if note.tags == 'meeting' %}selected{% endif %}>meeting</option>
+                                        <option value="todo" {% if note.tags == 'todo' %}selected{% endif %}>todo</option>
+                                        <option value="idea" {% if note.tags == 'idea' %}selected{% endif %}>idea</option>
+                                    </select>
+                                    <button type="submit">Set Tag</button>
+                                    <button type="button" class="cancel-tag" data-note-id="{{ note.note_id }}">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No notes yet. Add one below!</p>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Add Note Popup -->
+        <div class="popup-overlay" id="popup-overlay"></div>
+        <div class="popup-box" id="popup-box">
+            <h2>Add Note</h2>
+            <form id="note-form" action="/notes" method="post">
+                <input type="hidden" id="set-reminder-hidden" name="set_reminder" value="off">
+                <label for="note-title">Title:</label>
+                <input type="text" id="note-title" name="title" required>
+                <label for="note-content">Content:</label>
+                <textarea id="note-content" name="content" required></textarea>
+                <label for="set-reminder">Set Reminder:</label>
+                <button type="button" class="set-reminder-toggle" id="set-reminder" data-state="off">Off</button>
+                <label for="reminder-date">Reminder Date:</label>
+                <input type="date" id="reminder-date" name="reminder_date" disabled>
+                <label for="tag-new">Tag:</label>
+                <select id="tag-new" name="tag">
+                    <option value="">No Tag</option>
+                    <option value="work">work</option>
+                    <option value="personal">personal</option>
+                    <option value="urgent">urgent</option>
+                    <option value="study">study</option>
+                    <option value="meeting">meeting</option>
+                    <option value="todo">todo</option>
+                    <option value="idea">idea</option>
+                </select>
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <button type="submit">Save Note</button>
+                <button type="button" class="close-popup" id="close-popup">close</button>
+            </form> 
+        </div>
+        <!-- Delete Confirmation Popup -->
+        <div class="popup-overlay" id="delete-overlay" style="display: none;"></div>
+        <div class="popup-box" id="delete-confirm-box" style="display: none;">
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this note?</p>
+            <button type="button" class="confirm-btn" onclick="confirmDelete()">Confirm</button>
+            <button type="button" class="cancel-btn" onclick="cancelDelete()">Cancel</button>
+        </div>
+        <button class="add-popup-button" id="add-note">+</button>
+    </div>
+    <script src="{{ url_for('static', path='js/home.js') }}"></script>
+</body>
+</html>
