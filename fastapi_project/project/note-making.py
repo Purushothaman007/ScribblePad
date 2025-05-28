@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -17,8 +19,11 @@ from datetime import date
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
 
+# Load environment variables from .env file
+load_dotenv()
+
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="purushoth@2005")
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET"))
 templates = Jinja2Templates(directory="templates")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -26,10 +31,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 while True:
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            database="note-making",
-            user="postgres",
-            password="2005",
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
             cursor_factory=RealDictCursor
         )
         cursor = conn.cursor()
@@ -43,10 +48,10 @@ while True:
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Email configuration
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SMTP_USERNAME = "scribblepadnotes@gmail.com"
-SMTP_PASSWORD = "ijzj gnoj zdwg vyaz"
+SMTP_SERVER = os.getenv("SMTP_SERVER")
+SMTP_PORT = int(os.getenv("SMTP_PORT"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 def send_reminder_email(to_email, note_title, note_content):
     msg = MIMEText(f"Reminder: Your note '{note_title}' is due today!\n\nContent: {note_content}")
@@ -666,7 +671,7 @@ async def export_notes_pdf(request: Request, selected_tag: str = Form(None)):
 
         # Prepare the PDF for streaming
         buffer.seek(0)
-        timestamp = datetime.now().strftime("%Y-%m-%d_%h%M%S")
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
         filename = f"notes_export_{timestamp}.pdf"
 
         return StreamingResponse(
