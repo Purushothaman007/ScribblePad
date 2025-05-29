@@ -15,7 +15,7 @@ import smtplib
 from email.mime.text import MIMEText
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pathlib import Path
-from sqlalchemy.orm import Session.
+from sqlalchemy.orm import Session
 from fastapi_project.project.models import Base, User, Note, engine, SessionLocal
 
 # Load environment variables from .env file
