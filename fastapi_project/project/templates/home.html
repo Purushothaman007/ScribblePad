@@ -74,7 +74,7 @@
                                     <input type="text" id="edit-title-{{ note.note_id }}" name="title" value="{{ note.title }}" required>
                                     <label for="edit-content-{{ note.note_id }}">Content:</label>
                                     <textarea id="edit-content-{{ note.note_id }}" name="content" required>{{ note.content }}</textarea>
-                                    <label for="set-reminder-{{ note.note_id }}">Set Reminder:</label>
+                                    <label for="set-reminder-{{ note.note_id }}">Set Reminder:we'll send you mail ✌️</label>
                                     <button type="button" class="set-reminder-toggle" id="set-reminder-{{ note.note_id }}" data-state="{% if note.reminder_date %}on{% else %}off{% endif %}">
                                         {% if note.reminder_date %}On{% else %}Off{% endif %}
                                     </button>

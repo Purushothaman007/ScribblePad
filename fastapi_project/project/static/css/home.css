@@ -10,9 +10,9 @@ body {
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
-    display: flex; /* Make container a flex container */
-    flex-direction: row; /* Arrange children (sidebar and main content) in a row */
-    gap: 20px; /* Add some space between sidebar and main content */
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 .sidebar {
@@ -24,7 +24,9 @@ body {
     height: 300px;
     overflow-y: auto;
     box-sizing: border-box;
-    flex-shrink: 0; /* Prevent the sidebar from shrinking */
+    position: fixed;
+    top: 20px;
+    left: 20px;
 }
 
 .user-details {
@@ -46,7 +48,7 @@ body {
 .logout-btn, .export-pdf-btn {
     display: inline-block;
     padding: 8px 15px;
-    background-color:lab(96.84% -23.11 93.3 / 0.43);
+    background-color: lab(96.84% -23.11 93.3 / 0.43);
     color: black;
     text-decoration: none;
     border-radius: 4px;
@@ -67,6 +69,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 390px;
 }
 
 .note-card {
@@ -94,7 +97,6 @@ body {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    align-items: right;
 }
 
 .edit-btn {
@@ -109,7 +111,7 @@ body {
 
 .delete-btn {
     background-color: #ffc10752;
-    color:black;
+    color: black;
 }
 
 .edit-form, .tag-form {
@@ -154,7 +156,7 @@ body {
 }
 
 .tag-form button[type="submit"] {
-    background-color:#4CAF50;
+    background-color: #4CAF50;
     color: white;
 }
 
@@ -239,7 +241,6 @@ body {
     color: white;
 }
 
-/* Delete Confirmation Popup Styles */
 #delete-overlay {
     background-color: black;
     opacity: 0.8;
@@ -297,7 +298,6 @@ body {
     color: white;
 }
 
-/* Toggle button styling for Set Reminder */
 .set-reminder-toggle {
     padding: 8px 15px;
     border: none;
@@ -323,10 +323,9 @@ body {
 
 .set-reminder-toggle:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3); /* Green focus ring for accessibility */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
 }
 
-/* Tag badge styling */
 .tag-badge {
     display: inline-block;
     padding: 4px 8px;
@@ -365,10 +364,9 @@ body {
 }
 
 .tag-badge:not([class*="tag-"]) {
-    background-color: #6c757d; /* Default color for other tags */
+    background-color: #6c757d;
 }
 
-/* Filter by Tag Form */
 .filter-tags {
     margin-bottom: 20px;
 }
@@ -411,17 +409,35 @@ body {
 
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stack sidebar and main content vertically */
-        padding: 10px; /* Reduce padding for smaller screens */
+        flex-direction: column;
+        padding: 10px;
+        align-items: center;
     }
 
     .sidebar {
-        width: 100%; /* Sidebar takes full width on smaller screens */
-        position: static; /* Remove absolute positioning */
-        height: auto; /* Allow height to adjust based on content */
+        position: static;
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        margin-bottom: 20px;
     }
 
     .home-card {
-        width: 100%; /* Main content takes full width */
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .filter-tags {
+        margin-bottom: 20px;
+    }
+
+    .popup-box {
+        width: 80%;
+        left: 10%;
+    }
+
+    #delete-confirm-box {
+        width: 80%;
+        left: 10%;
     }
 }
