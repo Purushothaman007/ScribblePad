@@ -26,7 +26,7 @@ body {
     box-sizing: border-box;
     position: fixed;
     top: 20px;
-    left: 50px;
+    left: 20px; /* Reduced from 50px to align with container padding */
 }
 
 .user-details {
@@ -69,7 +69,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 250px;
+    margin-left: 390px; /* Adjusted to 350px (sidebar width) + 20px (sidebar left) + 20px (gap) */
 }
 
 .note-card {
