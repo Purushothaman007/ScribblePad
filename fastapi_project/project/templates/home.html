@@ -51,7 +51,7 @@
                                 <hr>
                                 <p>{{ note.content }}</p>
                                 {% if note.reminder_date %}
-                                    <p>Reminder: {{ note.reminder_date }}</p>
+                                   <p>Reminder: {{ note.reminder_date.strftime('%Y-%m-%d') }}</p>
                                 {% endif %}
                                 {% if note.tags %}
                                     <p>Tag: <span class="tag-badge tag-{{ note.tags }}">{{ note.tags }}</span></p>
