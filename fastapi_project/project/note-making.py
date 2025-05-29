@@ -105,9 +105,6 @@ async def start_scheduler():
     scheduler.start()
     # Run immediately on startup
     await check_reminders()
-    # Keep the scheduler running
-    while True:
-        await asyncio.sleep(1)
 
 # Root GET endpoint
 @app.get("/", response_class=HTMLResponse)
