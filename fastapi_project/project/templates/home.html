@@ -17,7 +17,7 @@
                 <input type="hidden" name="selected_tag" value="{{ selected_tag }}">
                 <button type="submit" class="export-pdf-btn">Export as PDF</button>
             </form>
-            <a href="/logout" class="logout-btn">Logout</a>
+            <a href="/logout" class="logout-btn"  onclick="return confirm('Are you sure you want to logout?');">Logout</a>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
                     {% for note in notes %}
                         <div class="note-card" id="note-{{ note.note_id }}">
                             <div class="note-content">
-                                <h3><strong>{{ note.title }}<strong></h3>
+                                <h3><strong>{{ note.title }}</strong></h3>
                                 <hr>
                                 <p>{{ note.content }}</p>
                                 {% if note.reminder_date %}
@@ -120,7 +120,7 @@
                 <input type="text" id="note-title" name="title" required>
                 <label for="note-content">Content:</label>
                 <textarea id="note-content" name="content" required></textarea>
-                <label for="set-reminder">Set Reminder:we'll send mail to notify you✌️</label>
+                <label for="set-reminder">Set Reminder: we'll send you a mail ✌️</label>
                 <button type="button" class="set-reminder-toggle" id="set-reminder" data-state="off">Off</button>
                 <label for="reminder-date">Reminder Date:</label>
                 <input type="date" id="reminder-date" name="reminder_date" disabled>

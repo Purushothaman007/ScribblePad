@@ -9,8 +9,10 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
-    padding-left: 200px; 
     box-sizing: border-box;
+    display: flex; /* Make container a flex container */
+    flex-direction: row; /* Arrange children (sidebar and main content) in a row */
+    gap: 20px; /* Add some space between sidebar and main content */
 }
 
 .sidebar {
@@ -19,12 +21,10 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: absolute; 
-    top: 20px;
-    left: 50px; 
-    height: 300px; 
+    height: 300px;
     overflow-y: auto;
     box-sizing: border-box;
+    flex-shrink: 0; /* Prevent the sidebar from shrinking */
 }
 
 .user-details {
@@ -407,4 +407,21 @@ body {
 .filter-tags button[type="button"] {
     background-color: #6c757d;
     color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack sidebar and main content vertically */
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .sidebar {
+        width: 100%; /* Sidebar takes full width on smaller screens */
+        position: static; /* Remove absolute positioning */
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    .home-card {
+        width: 100%; /* Main content takes full width */
+    }
 }
