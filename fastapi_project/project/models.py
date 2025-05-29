@@ -3,6 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create a base class for your models
 Base = declarative_base()
