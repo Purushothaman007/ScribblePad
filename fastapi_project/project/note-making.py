@@ -28,7 +28,10 @@ engine = create_engine(DATABASE_URL)
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET"))
-templates = Jinja2Templates(directory="templates")
+
+BASE_DIR = Path(__file__).resolve().parent
+templates = Jinja2Templates(directory=str(BASE_DIR.parent.parent / "templates"))
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Database connection
