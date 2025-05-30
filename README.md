@@ -22,9 +22,3 @@ A sleek and simple note-taking API built with **FastAPI** to create, edit, and m
 
 ---
 
-## 🔧 Setup
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/scribblepad.git
-cd scribblepad
