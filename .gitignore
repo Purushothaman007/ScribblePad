@@ -64,3 +64,5 @@ coverage.xml
 
 # FastAPI specific (if using uvicorn reload)
 *.pid
+
+temp.py

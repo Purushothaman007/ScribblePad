@@ -86,7 +86,7 @@ async def check_reminders(db: Session):
 async def start_scheduler():
     scheduler = AsyncIOScheduler()
     db = SessionLocal()  # Create a single session for the scheduler
-    scheduler.add_job(check_reminders, "interval", days=1, args=[db])
+    scheduler.add_job(check_reminders, "interval", minutes=2, args=[db])
     scheduler.start()
     await check_reminders(db)
 
