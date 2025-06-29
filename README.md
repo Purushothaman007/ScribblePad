@@ -20,6 +20,5 @@ A sleek and simple note-taking API built with **FastAPI** to create, edit, and m
 - **Database**: SQLite 💾 with SQLAlchemy 📊  
 - **Server**: Uvicorn 🌟  
 
----
--**Website**:https://scribblepad-ommk.onrender.com
+
 
